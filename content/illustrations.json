@@ -1,6 +1,6 @@
 {
   "cover": {
-    "image": "assets/illustrations/home-sunrise.gif",
+    "image": "/assets/illustrations/home-sunrise.gif",
     "alt": "手绘太阳从海面升起的动图"
   },
   "photo_character": {
@@ -16,7 +16,7 @@
     "alt": "伏案写作的人"
   },
   "story_icon": {
-    "image": "assets/cms/original-02.png",
+    "image": "/assets/illustrations/file.gif",
     "alt": "手绘羽毛笔"
   },
   "taste_icon": {
