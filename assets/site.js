@@ -196,8 +196,48 @@
       $$('a', row).forEach(a => { a.href = src; if (a.hasAttribute('download')) a.setAttribute('download', i === 0 ? owner + '-中文简历.pdf' : 'Resume-EN.pdf'); });
     });
   }
+  // Keep the original hand-cropped composition until a different image is selected.
+  const artSlots = {
+    cover: '143', photo_character: '144', photo_icon: '145',
+    story_character: '146', story_icon: '147', taste_icon: '148',
+    bookshelf: '149', gramophone: '150'
+  };
+  const originalArt = new Map(Object.entries(artSlots).map(([key, id]) => {
+    const image = $(`img[data-art="${id}"]`);
+    return [key, {image, url: image.src, alt: image.alt, style: image.getAttribute('style') || ''}];
+  }));
+  function renderIllustrations(data) {
+    if (!data || typeof data !== 'object') return;
+    for (const [key, original] of originalArt) {
+      const settings = data[key];
+      const url = mediaURL(settings?.image);
+      if (!url) continue;
+      const image = original.image;
+      const frame = image.closest('.art-crop');
+      function restore() {
+        image.onerror = null;
+        frame.classList.remove('art-fit');
+        image.setAttribute('style', original.style);
+        image.src = original.url;
+        image.alt = original.alt;
+      }
+      if (url === original.url) {
+        restore();
+        if (typeof settings.alt === 'string') image.alt = settings.alt;
+        continue;
+      }
+      // A missing upload falls back to the working original drawing.
+      image.onerror = restore;
+      frame.classList.add('art-fit');
+      image.removeAttribute('style');
+      if (typeof settings.alt === 'string') image.alt = settings.alt;
+      image.src = url;
+    }
+    $$('.book-link').forEach(link => { link.hidden = data.show_book_names === false; });
+  }
+
   // Each section updates independently; an unavailable JSON file retains its static fallback.
-  const renderers = {home: renderHome, photos: renderPhotos, stories: renderStories, music: renderMusic, resume: renderResume};
+  const renderers = {home: renderHome, photos: renderPhotos, stories: renderStories, music: renderMusic, resume: renderResume, illustrations: renderIllustrations};
   Promise.allSettled(Object.entries(renderers).map(async ([name, render]) => {
     const response = await fetch(`content/${name}.json`, {cache: 'no-cache'});
     if (!response.ok) throw new Error(`Content unavailable: ${name}`);
