@@ -1,0 +1,156 @@
+media:
+- name: photos
+  label: 摄影照片
+  input: assets/photographs
+  output: /assets/photographs
+  extensions:
+  - jpg
+  - jpeg
+  - png
+  - webp
+  rename: safe
+- name: images
+  label: 文章配图
+  input: assets/cms
+  output: /assets/cms
+  extensions:
+  - jpg
+  - jpeg
+  - png
+  - webp
+  rename: safe
+- name: audio
+  label: 音乐文件
+  input: assets/audio
+  output: /assets/audio
+  extensions:
+  - mp3
+  - m4a
+  - ogg
+  - wav
+  rename: safe
+- name: documents
+  label: 简历文件
+  input: assets/resume
+  output: /assets/resume
+  extensions:
+  - pdf
+  rename: safe
+content:
+- name: home
+  label: 首页与签名
+  type: file
+  path: content/home.json
+  format: json
+  fields:
+  - name: name
+    label: 姓名
+    type: string
+    required: true
+  - name: greeting
+    label: 首页问候
+    type: string
+    required: true
+  - name: signature
+    label: 个性签名
+    type: string
+    required: true
+- name: photos
+  label: 瞎拍拍的照片
+  type: file
+  path: content/photos.json
+  format: json
+  fields:
+  - name: items
+    label: 摄影作品（可添加、删除、拖动排序）
+    type: object
+    list:
+      collapsible:
+        collapsed: true
+        summary: '{caption}'
+    fields:
+    - name: image
+      label: 照片
+      type: image
+      options:
+        media: photos
+      required: true
+    - name: caption
+      label: 照片描述
+      type: string
+      required: true
+- name: stories
+  label: 瞎写写的故事
+  type: file
+  path: content/stories.json
+  format: json
+  fields:
+  - name: items
+    label: 文章（可添加、删除、拖动排序）
+    type: object
+    list:
+      collapsible:
+        collapsed: true
+        summary: '{title}'
+    fields:
+    - name: title
+      label: 文章标题
+      type: string
+      required: true
+    - name: category
+      label: 文章类型（例如：随笔、报道）
+      type: string
+      required: true
+    - name: excerpt
+      label: 列表摘要
+      type: text
+    - name: meta
+      label: 署名或日期
+      type: string
+    - name: body
+      label: 文章正文
+      type: rich-text
+      required: true
+      options:
+        format: html
+        media: images
+        switcher: false
+- name: music
+  label: 留声机与音乐
+  type: file
+  path: content/music.json
+  format: json
+  fields:
+  - name: title
+    label: 歌曲名称
+    type: string
+    required: true
+  - name: artist
+    label: 歌手
+    type: string
+  - name: audio
+    label: 选择或上传音频
+    type: file
+    options:
+      media: audio
+  - name: caption
+    label: 留声机下面的小字
+    type: text
+- name: resume
+  label: 中英文简历
+  type: file
+  path: content/resume.json
+  format: json
+  fields:
+  - name: chinese
+    label: 中文简历 PDF
+    type: file
+    options:
+      media: documents
+    required: true
+  - name: english
+    label: 英文简历 PDF
+    type: file
+    options:
+      media: documents
+    required: true
