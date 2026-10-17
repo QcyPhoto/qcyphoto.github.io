@@ -1,10 +1,6 @@
 {
   "items": [
     {
-      "image": "/assets/photographs/original-06.jpg",
-      "caption": "蓝色水面上低飞的水鸟"
-    },
-    {
       "image": "/assets/photographs/original-07.jpg",
       "caption": "阳光下的黄色窗框与墙面"
     },
@@ -21,8 +17,32 @@
       "caption": "绿树下停在屋顶的两只白鸟"
     },
     {
-      "image": "/assets/photographs/8b6c976d-49e7-416a-bd1a-dd65175e8a83.png",
-      "caption": "照片Test"
+      "image": "/assets/photographs/original-06.jpg",
+      "caption": "蓝色水面上低飞的水鸟"
+    },
+    {
+      "image": "/assets/photographs/dscf4773.jpg",
+      "caption": "远处的红色灯塔"
+    },
+    {
+      "image": "/assets/photographs/dscf4765.jpg",
+      "caption": "浮冰与灯塔"
+    },
+    {
+      "image": "/assets/photographs/dscf4395.jpg",
+      "caption": "莫罗城堡"
+    },
+    {
+      "image": "/assets/photographs/20261011140352642.jpg",
+      "caption": "废旧的船"
+    },
+    {
+      "image": "/assets/photographs/photo-05.jpg",
+      "caption": "画中的和椅子上的穿白色裙子的女人"
+    },
+    {
+      "image": "/assets/photographs/photo-04.jpg",
+      "caption": "丁达尔效应下的穿礼服的女人"
     }
   ]
 }
