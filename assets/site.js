@@ -3,7 +3,7 @@
   'use strict';
   const $ = (s, root = document) => root.querySelector(s);
   const $$ = (s, root = document) => [...root.querySelectorAll(s)];
-  const labels = { home: '首页', writing: '瞎写写的故事', photographs: '瞎拍拍的照片', shelf: '审美积累一下吧', about: '说点正事儿' };
+  const labels = { home: 'Hi!', writing: '瞎写写的故事', photographs: '瞎拍拍的照片', shelf: '审美积累一下吧', about: '说点正事儿' };
   let owner = '卿晨阳';
   let song = { title: '亲密爱人', audio: 'assets/audio/anita-mui-intimate-lover-live.mp3' };
   let current = 0;
@@ -185,7 +185,14 @@
 
   function renderHome(data) {
     if (asText(data.name)) { owner = data.name; $('.name').textContent = owner; }
-    if (typeof data.greeting === 'string') $('#home-title').textContent = data.greeting;
+    if (typeof data.greeting === 'string') {
+      const title = $('#home-title');
+      // Keep the uploaded handwriting when the CMS greeting matches it.
+      if (data.greeting !== title.dataset.handwrittenText) {
+        title.textContent = data.greeting;
+        title.removeAttribute('aria-label');
+      }
+    }
     if (typeof data.signature === 'string') $('.hello p').textContent = data.signature;
     route();
   }

@@ -41,6 +41,7 @@ media:
   input: assets/illustrations
   output: /assets/illustrations
   extensions:
+  - gif
   - png
   - jpg
   - jpeg
