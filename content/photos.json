@@ -1,36 +1,28 @@
 {
   "items": [
     {
-      "image": "assets/photographs/original-06.jpg",
+      "image": "/assets/photographs/original-06.jpg",
       "caption": "蓝色水面上低飞的水鸟"
     },
     {
-      "image": "assets/photographs/original-07.jpg",
+      "image": "/assets/photographs/original-07.jpg",
       "caption": "阳光下的黄色窗框与墙面"
     },
     {
-      "image": "assets/photographs/original-08.jpg",
+      "image": "/assets/photographs/original-08.jpg",
       "caption": "山林间弥漫的雾"
     },
     {
-      "image": "assets/photographs/original-09.jpg",
+      "image": "/assets/photographs/original-09.jpg",
       "caption": "藏在绿叶间的小雕像"
     },
     {
-      "image": "assets/photographs/original-10.jpg",
+      "image": "/assets/photographs/original-10.jpg",
       "caption": "绿树下停在屋顶的两只白鸟"
     },
     {
-      "image": "assets/photographs/DSCF4395.JPG",
-      "caption": "海边草坡、古城墙与街道"
-    },
-    {
-      "image": "assets/photographs/DSCF4765.JPG",
-      "caption": "雪后的海岸、红白灯塔与飞鸟"
-    },
-    {
-      "image": "assets/photographs/DSCF4773.JPG",
-      "caption": "通向远处灯塔的积雪栈道"
+      "image": "/assets/photographs/8b6c976d-49e7-416a-bd1a-dd65175e8a83.png",
+      "caption": "照片Test"
     }
   ]
 }
