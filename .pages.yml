@@ -36,6 +36,16 @@ media:
   extensions:
   - pdf
   rename: safe
+- name: illustrations
+  label: 网站插图
+  input: assets/illustrations
+  output: /assets/illustrations
+  extensions:
+  - png
+  - jpg
+  - jpeg
+  - webp
+  rename: safe
 content:
 - name: home
   label: 首页与签名
@@ -154,3 +164,116 @@ content:
     options:
       media: documents
     required: true
+- name: illustrations
+  label: 网站插图
+  type: file
+  path: content/illustrations.json
+  format: json
+  fields:
+  - name: cover
+    label: 首页 · 右侧插图
+    type: object
+    fields:
+    - name: image
+      label: 选择或上传替换插图
+      type: image
+      required: true
+      options:
+        media: illustrations
+    - name: alt
+      label: 图片描述（供读屏使用）
+      type: string
+  - name: photo_character
+    label: 摄影页 · 拍照的人
+    type: object
+    fields:
+    - name: image
+      label: 选择或上传替换插图
+      type: image
+      required: true
+      options:
+        media: illustrations
+    - name: alt
+      label: 图片描述（供读屏使用）
+      type: string
+  - name: photo_icon
+    label: 摄影页 · 标题上方小相机
+    type: object
+    fields:
+    - name: image
+      label: 选择或上传替换插图
+      type: image
+      required: true
+      options:
+        media: illustrations
+    - name: alt
+      label: 图片描述（供读屏使用）
+      type: string
+  - name: story_character
+    label: 故事页 · 写作的人
+    type: object
+    fields:
+    - name: image
+      label: 选择或上传替换插图
+      type: image
+      required: true
+      options:
+        media: illustrations
+    - name: alt
+      label: 图片描述（供读屏使用）
+      type: string
+  - name: story_icon
+    label: 故事页 · 标题上方羽毛笔
+    type: object
+    fields:
+    - name: image
+      label: 选择或上传替换插图
+      type: image
+      required: true
+      options:
+        media: illustrations
+    - name: alt
+      label: 图片描述（供读屏使用）
+      type: string
+  - name: taste_icon
+    label: 审美页 · 标题上方小苹果
+    type: object
+    fields:
+    - name: image
+      label: 选择或上传替换插图
+      type: image
+      required: true
+      options:
+        media: illustrations
+    - name: alt
+      label: 图片描述（供读屏使用）
+      type: string
+  - name: bookshelf
+    label: 审美页 · 左侧书架
+    type: object
+    fields:
+    - name: image
+      label: 选择或上传替换插图
+      type: image
+      required: true
+      options:
+        media: illustrations
+    - name: alt
+      label: 图片描述（供读屏使用）
+      type: string
+  - name: gramophone
+    label: 审美页 · 右侧留声机
+    type: object
+    fields:
+    - name: image
+      label: 选择或上传替换插图
+      type: image
+      required: true
+      options:
+        media: illustrations
+    - name: alt
+      label: 图片描述（供读屏使用）
+      type: string
+  - name: show_book_names
+    label: 显示书架上的可点击书名（换成不同结构的书架时可先关闭）
+    type: boolean
