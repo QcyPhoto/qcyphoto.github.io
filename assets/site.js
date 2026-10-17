@@ -206,6 +206,59 @@
     const image = $(`img[data-art="${id}"]`);
     return [key, {image, url: image.src, alt: image.alt, style: image.getAttribute('style') || ''}];
   }));
+  // Measure only the ink, leaving the uploaded file itself unchanged.
+  function inkBounds(pixels, width, height) {
+    let left = width, top = height, right = -1, bottom = -1;
+    for (let y = 0; y < height; y++) {
+      for (let x = 0; x < width; x++) {
+        const i = (y * width + x) * 4;
+        const darkness = (255 - Math.min(pixels[i], pixels[i + 1], pixels[i + 2])) * pixels[i + 3] / 255;
+        if (darkness <= 12) continue;
+        left = Math.min(left, x); right = Math.max(right, x);
+        top = Math.min(top, y); bottom = Math.max(bottom, y);
+      }
+    }
+    if (right < left) return null;
+    const pad = Math.max(2, Math.ceil(Math.max(right - left + 1, bottom - top + 1) * .025));
+    left = Math.max(0, left - pad); top = Math.max(0, top - pad);
+    right = Math.min(width - 1, right + pad); bottom = Math.min(height - 1, bottom + pad);
+    return {x: left, y: top, width: right - left + 1, height: bottom - top + 1};
+  }
+  function drawingPlacement(bounds, width, height, frameRatio) {
+    const inkRatio = bounds.width / bounds.height;
+    const displayWidth = Math.min(1, inkRatio / frameRatio);
+    const displayHeight = displayWidth * frameRatio / inkRatio;
+    return {
+      width: 100 * displayWidth * width / bounds.width,
+      left: 100 * ((1 - displayWidth) / 2 - bounds.x / bounds.width * displayWidth),
+      top: 100 * ((1 - displayHeight) / 2 - bounds.y / bounds.height * displayHeight)
+    };
+  }
+  function fitDrawing(image, frame) {
+    if (!image.naturalWidth || !image.naturalHeight) return;
+    try {
+      const scale = Math.min(1, 768 / Math.max(image.naturalWidth, image.naturalHeight));
+      const canvas = document.createElement('canvas');
+      canvas.width = Math.max(1, Math.round(image.naturalWidth * scale));
+      canvas.height = Math.max(1, Math.round(image.naturalHeight * scale));
+      const ctx = canvas.getContext('2d', {willReadFrequently: true});
+      if (!ctx) return;
+      ctx.drawImage(image, 0, 0, canvas.width, canvas.height);
+      const bounds = inkBounds(ctx.getImageData(0, 0, canvas.width, canvas.height).data, canvas.width, canvas.height);
+      if (!bounds) return;
+      // Each drawing keeps its original layout frame, including on hidden pages.
+      const parts = frame.style.aspectRatio.split('/').map(Number);
+      const ratio = parts.length === 2 ? parts[0] / parts[1] : parts[0];
+      if (!(ratio > 0)) return;
+      const place = drawingPlacement(bounds, canvas.width, canvas.height, ratio);
+      frame.classList.remove('art-fit');
+      image.style.width = place.width + '%';
+      image.style.height = 'auto';
+      image.style.left = place.left + '%';
+      image.style.top = place.top + '%';
+      image.style.maxWidth = 'none';
+    } catch { /* Keep full-image display if pixel inspection is unavailable. */ }
+  }
   function renderIllustrations(data) {
     if (!data || typeof data !== 'object') return;
     for (const [key, original] of originalArt) {
@@ -215,7 +268,7 @@
       const image = original.image;
       const frame = image.closest('.art-crop');
       function restore() {
-        image.onerror = null;
+        image.onerror = null; image.onload = null;
         frame.classList.remove('art-fit');
         image.setAttribute('style', original.style);
         image.src = original.url;
@@ -226,12 +279,13 @@
         if (typeof settings.alt === 'string') image.alt = settings.alt;
         continue;
       }
-      // A missing upload falls back to the working original drawing.
       image.onerror = restore;
+      image.onload = () => fitDrawing(image, frame);
       frame.classList.add('art-fit');
       image.removeAttribute('style');
       if (typeof settings.alt === 'string') image.alt = settings.alt;
       image.src = url;
+      if (image.complete && image.naturalWidth) fitDrawing(image, frame);
     }
     $$('.book-link').forEach(link => { link.hidden = data.show_book_names === false; });
   }
