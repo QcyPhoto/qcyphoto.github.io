@@ -8,11 +8,11 @@
     "alt": "手拿相机的人"
   },
   "photo_icon": {
-    "image": "assets/cms/original-04.png",
+    "image": "/assets/illustrations/img0153.png",
     "alt": "手绘相机"
   },
   "story_character": {
-    "image": "assets/cms/original-03.png",
+    "image": "/assets/illustrations/img0154.png",
     "alt": "伏案写作的人"
   },
   "story_icon": {
@@ -20,15 +20,15 @@
     "alt": "手绘羽毛笔"
   },
   "taste_icon": {
-    "image": "assets/cms/original-11.png",
+    "image": "/assets/illustrations/img0152.png",
     "alt": "手绘苹果"
   },
   "bookshelf": {
-    "image": "assets/cms/original-12.png",
+    "image": "/assets/illustrations/img0155.png",
     "alt": "手绘书架，书名可以点击"
   },
   "gramophone": {
-    "image": "assets/cms/original-13.png",
+    "image": "/assets/illustrations/img0151.png",
     "alt": "手绘留声机，点击播放或暂停"
   },
   "show_book_names": true
