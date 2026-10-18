@@ -157,10 +157,31 @@
   }
 
   const audio = $('#playlist-audio'), player = $('#playlist-button'), status = $('#playlist-status');
+  const musicToggle = $('#music-toggle'), progress = $('#music-progress');
+  function formatTime(value) {
+    const seconds = Number.isFinite(value) && value > 0 ? Math.floor(value) : 0;
+    return `${Math.floor(seconds / 60)}:${String(seconds % 60).padStart(2, '0')}`;
+  }
+  function updateProgress() {
+    const ready = Number.isFinite(audio.duration) && audio.duration > 0;
+    const fraction = ready ? Math.min(1, Math.max(0, audio.currentTime / audio.duration)) : 0;
+    progress.disabled = !ready;
+    progress.value = String(Math.round(fraction * 1000));
+    progress.closest('.music-seek').style.setProperty('--remaining', String(100 - fraction * 100));
+    progress.setAttribute('aria-valuetext', `${formatTime(audio.currentTime)} / ${formatTime(audio.duration)}`);
+    $('#music-current').textContent = formatTime(audio.currentTime);
+    $('#music-duration').textContent = formatTime(audio.duration);
+  }
   function playerState() {
-    const playing = !audio.paused;
-    player.setAttribute('aria-pressed', String(playing));
-    player.setAttribute('aria-label', (playing ? '暂停《' : '播放《') + song.title + '》');
+    const playing = !audio.paused && !audio.ended;
+    for (const button of [player, musicToggle]) {
+      button.setAttribute('aria-pressed', String(playing));
+      button.setAttribute('aria-label', (playing ? '暂停《' : '播放《') + song.title + '》');
+    }
+    $('[data-music-icon="play"]').toggleAttribute('hidden', playing);
+    $('[data-music-icon="pause"]').toggleAttribute('hidden', !playing);
+    $('#music-title').textContent = song.title;
+    $('#music-artist').textContent = song.artist || '';
     $('#playlist-hint').textContent = song.title;
     if (song.artist) player.title = song.title + ' · ' + song.artist;
   }
@@ -172,15 +193,25 @@
     status.hidden = true;
     if (typeof data.caption === 'string') $('.dream').textContent = data.caption;
     playerState();
+    updateProgress();
   }
   renderMusic(song);
-  player.addEventListener('click', async () => {
+  async function toggleMusic() {
     if (!song.audio) { status.hidden = false; status.textContent = '歌单准备中，稍后就能听到。'; return; }
     if (!audio.paused) { audio.pause(); return; }
     try { await audio.play(); status.hidden = true; }
     catch { status.hidden = false; status.textContent = '暂时无法播放，请稍后再试。'; }
+  }
+  player.addEventListener('click', toggleMusic);
+  musicToggle.addEventListener('click', toggleMusic);
+  progress.addEventListener('input', () => {
+    if (Number.isFinite(audio.duration) && audio.duration > 0) {
+      audio.currentTime = Number(progress.value) / 1000 * audio.duration;
+      updateProgress();
+    }
   });
   ['play', 'pause', 'ended'].forEach(type => audio.addEventListener(type, playerState));
+  ['loadedmetadata', 'durationchange', 'timeupdate', 'seeked', 'emptied'].forEach(type => audio.addEventListener(type, updateProgress));
   audio.addEventListener('error', () => { status.hidden = false; status.textContent = '歌曲暂时无法加载，请稍后再试。'; });
 
   function renderHome(data) {

@@ -28,7 +28,7 @@
     "alt": "手绘书架，书名可以点击"
   },
   "gramophone": {
-    "image": "/assets/illustrations/img0151.png",
+    "image": "/assets/illustrations/gramophone-still.png",
     "alt": "手绘留声机，点击播放或暂停"
   },
   "show_book_names": true
